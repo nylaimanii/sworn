@@ -22,3 +22,9 @@ honesty over perfection. this documents what sworn found, what it got wrong, and
 ## known limitations (honest)
 - 477 still over-includes: DVWA legitimately contains many `.php` files, so "executable script under web root" flags benign app files alongside the real webshell. a production pass would correlate with timeline anomalies / known-bad hashes to rank further. documented rather than hidden.
 - findings asserted as "confirmed" trace to a tool-execution receipt; intent (malice vs. legitimate) is not over-claimed.
+
+## self-correction by corroboration (live, on the c99 finding)
+- iteration 1 (hypothesis): mft timeline flagged `C:/Users/Administrator/AppData/Local/Temp/c99 (2).php (deleted)` (inode 62338-128-4) as a webshell candidate.
+- iteration 2 (corroboration): an independent second tool (`istat` on the inode) was run automatically. it confirmed a metadata entry consistent with a dropped-then-deleted file.
+- verdict: **confirmed-high** (both sources agree). the corroboration step has its own receipt (`af45baa5f9e88403`) appended to the ledger; chain verifies clean.
+- design: a finding that could NOT be corroborated would be downgraded to "weak" and not asserted as confirmed — over-assertion is treated as a failure. hard max-iterations cap prevents runaway loops.
