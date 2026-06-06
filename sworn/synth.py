@@ -1,54 +1,57 @@
 """synthesizer: turns typed records + receipts into a structured investigative
 narrative, not a raw log. every flagged finding carries its receipt id, so a
-claim cannot appear in the narrative without tracing to a ledger entry."""
+claim cannot appear in the narrative without tracing to a ledger entry.
+
+patterns are deliberately TIGHT: a senior analyst flags attacker artifacts,
+not every innocent file whose path happens to contain a keyword. over-flagging
+is itself a failure mode (see accuracy report)."""
 from __future__ import annotations
 import re
 from dataclasses import dataclass
 from .tools.mft import MFTEntry
 from .receipt import Receipt
 
-# patterns a senior analyst would flag on a compromised web server
-_SUSPICIOUS = [
-    (r"\.(php|asp|aspx|jsp)$", "web-executable in filesystem (possible webshell)"),
-    (r"(cmd|powershell|nc|netcat|mimikatz|psexec)\.exe$", "attacker tooling / lolbin"),
-    (r"/(inetpub|wwwroot|htdocs|xampp)/", "file under web-served directory"),
-    (r"\.(bat|vbs|ps1)$", "script artifact"),
-    (r"(shell|backdoor|webshell|r57|c99)", "suspicious filename keyword"),
-]
+# web-served roots where a dropped executable script is genuinely suspicious
+_WEBROOT = re.compile(r"/(inetpub/wwwroot|htdocs|www|webapps)/", re.IGNORECASE)
+# executable web scripts (webshell candidates) ONLY when under a web root
+_WEBSCRIPT = re.compile(r"\.(php|asp|aspx|jsp|jspx)$", re.IGNORECASE)
+# named attacker tooling / known webshell families
+_TOOLING = re.compile(r"(mimikatz|psexec|\bnc\.exe$|netcat|r57|c99|b374k|webshell|backdoor)", re.IGNORECASE)
+# skip obvious benign noise so we don't re-introduce false positives
+_BENIGN = re.compile(r"(\$FILE_NAME\)|/Start Menu/|\.lnk$|\.url$|Uninstall)", re.IGNORECASE)
 
 @dataclass
 class Finding:
-    claim: str
+    filename: str
     why: str
     inode: str
-    filename: str
     receipt_id: str
-    confidence: str  # "confirmed" (traces to receipt) or "inference"
+    confidence: str
 
 def synthesize(records: list[MFTEntry], receipt: Receipt) -> tuple[list[Finding], str]:
     findings: list[Finding] = []
     for r in records:
-        for pat, why in _SUSPICIOUS:
-            if re.search(pat, r.filename, re.IGNORECASE):
-                findings.append(Finding(
-                    claim=f"flagged: {r.filename}",
-                    why=why, inode=r.inode, filename=r.filename,
-                    receipt_id=receipt.receipt_id, confidence="confirmed",
-                ))
-                break
-    # build the narrative
-    lines = []
-    lines.append("# sworn — investigative finding")
-    lines.append("")
-    lines.append("## summary")
-    lines.append(f"analyzed {len(records):,} filesystem records from the mft timeline. "
-                 f"flagged {len(findings)} entries of forensic interest on a windows web server. "
-                 f"all findings trace to tool execution receipt `{receipt.receipt_id}`.")
-    lines.append("")
-    lines.append("## flagged findings (each traces to a receipt)")
+        name = r.filename
+        if _BENIGN.search(name):
+            continue
+        why = None
+        if _WEBSCRIPT.search(name) and _WEBROOT.search(name):
+            why = "executable web script under a served web root (webshell candidate)"
+        elif _TOOLING.search(name):
+            why = "named attacker tooling / known webshell family"
+        if why:
+            findings.append(Finding(filename=name, why=why, inode=r.inode,
+                                    receipt_id=receipt.receipt_id, confidence="confirmed"))
+    lines = ["# sworn — investigative finding", "",
+             "## summary",
+             f"analyzed {len(records):,} filesystem records from the mft timeline. "
+             f"flagged {len(findings)} entries of forensic interest under tight, analyst-style criteria "
+             f"(web-served executable scripts and named attacker tooling only). "
+             f"all findings trace to tool execution receipt `{receipt.receipt_id}`.", "",
+             "## flagged findings (each traces to a receipt)"]
     for f in findings[:40]:
         lines.append(f"- **{f.filename}** — {f.why}  ")
         lines.append(f"  inode `{f.inode}` · receipt `{f.receipt_id}` · {f.confidence}")
     if not findings:
-        lines.append("- none matched the suspicious-pattern set; no confirmed findings to assert.")
+        lines.append("- none matched the tight criteria; no confirmed findings asserted on this pass.")
     return findings, "\n".join(lines)
