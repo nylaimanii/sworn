@@ -1,0 +1,75 @@
+<!doctype html><html><head><meta charset="utf-8"><title>sworn - finding</title>
+<style>
+  body{background:#FAF8F4;color:#1A1A1A;font-family:Georgia,serif;max-width:860px;margin:0 auto;padding:48px 32px;line-height:1.55}
+  h1{font-size:40px;margin:0;font-weight:bold}
+  .sub{font-family:Consolas,monospace;color:#6B6B6B;font-size:13px;border-bottom:3px solid #D98AA6;padding-bottom:18px;margin-bottom:28px}
+  h2{font-size:13px;font-family:Consolas,monospace;text-transform:uppercase;letter-spacing:2px;color:#D98AA6;margin-top:40px}
+  .headline{background:#fff;border:1px solid #E2DCD4;border-left:5px solid #D98AA6;border-radius:8px;padding:22px 26px;margin:18px 0}
+  .verdict{display:inline-block;background:#F7C8D8;color:#1A1A1A;font-family:Consolas,monospace;font-size:11px;padding:3px 10px;border-radius:4px;letter-spacing:1px}
+  .headline h3{margin:10px 0 6px;font-size:22px}
+  .meta{font-family:Consolas,monospace;font-size:12px;color:#6B6B6B}
+  .card{background:#fff;border:1px solid #E2DCD4;border-left:4px solid #D98AA6;border-radius:6px;padding:12px 18px;margin:10px 0}
+  .fn{font-family:Consolas,monospace;font-size:13px}
+  .why{font-size:13px;color:#6B6B6B}
+  .stat{display:inline-block;background:#fff;border:1px solid #E2DCD4;border-radius:6px;padding:10px 16px;margin:4px 8px 4px 0;font-family:Consolas,monospace;font-size:13px}
+  .stat b{font-size:22px;color:#1A1A1A;display:block;font-family:Georgia,serif}
+  footer{margin-top:48px;border-top:1px solid #E2DCD4;padding-top:16px;font-family:Consolas,monospace;font-size:11px;color:#6B6B6B}
+  svg{max-width:100%;height:auto;border:1px solid #E2DCD4;border-radius:8px;background:#fff;margin-top:14px}
+</style></head><body>
+<h1>sworn</h1>
+<div class="sub">investigative finding &middot; ali hadi case 1 &middot; an incident response agent architecturally incapable of lying</div>
+<div>
+  <span class="stat"><b>134075</b> records analyzed</span>
+  <span class="stat"><b>477</b> flagged of interest</span>
+  <span class="stat"><b>confirmed-high</b> top verdict</span>
+  <span class="stat"><b>(True, None)</b> ledger verify</span>
+</div>
+<h2>headline finding</h2>
+<div class="headline">
+  <span class="verdict">CONFIRMED-HIGH</span>
+  <h3>c99 webshell &mdash; dropped, then deleted</h3>
+  <div class="meta">C:/Users/Administrator/AppData/Local/Temp/c99 (2).php (deleted)<br>
+  inode 62338-128-4 &middot; receipt db75ff3b9bdc05d0 &middot; corroborated via istat (independent source)</div>
+  <p>a known php webshell family, staged in the administrator temp directory and deleted to cover tracks &mdash; the mft retained the record, so sworn still sees it. corroborated against a second tool before being upgraded to confirmed-high.</p>
+</div>
+<h2>attack timeline (real mft timestamps)</h2>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 360" font-family="Georgia, serif">
+<rect width="900" height="360" fill="#FAF8F4"/>
+<text x="40" y="44" font-size="24" font-weight="bold" fill="#1A1A1A">attack timeline — c99 webshell (real mft timestamps)</text>
+<text x="40" y="66" font-size="12" font-family="monospace" fill="#6B6B6B">ali hadi case 1 · every point traces to receipt db75ff3b9bdc05d0</text>
+<line x1="80" y1="150" x2="820" y2="150" stroke="#1A1A1A" stroke-width="2"/>
+<circle cx="80.0" cy="150" r="7" fill="#6B6B6B" stroke="#1A1A1A"/>
+<text x="80.0" y="130" font-size="11" font-family="monospace" fill="#6B6B6B" text-anchor="middle">2015-09-02 11:19</text>
+<line x1="80.0" y1="150" x2="80.0" y2="167" stroke="#E2DCD4"/>
+<text x="80.0" y="185" font-size="13" font-weight="bold" fill="#6B6B6B" text-anchor="middle">session file created</text>
+<text x="80.0" y="203" font-size="9" font-family="monospace" fill="#6B6B6B" text-anchor="middle">C:/xampp/tmp/sess_jl2dr1tc...</text>
+<text x="80.0" y="219" font-size="9" fill="#1A1A1A" text-anchor="middle">earliest activity in the window</text>
+<circle cx="326.66666666666663" cy="150" r="7" fill="#D98AA6" stroke="#1A1A1A"/>
+<text x="326.66666666666663" y="130" font-size="11" font-family="monospace" fill="#6B6B6B" text-anchor="middle">2015-09-03 07:14</text>
+<line x1="326.66666666666663" y1="150" x2="326.66666666666663" y2="237" stroke="#E2DCD4"/>
+<text x="326.66666666666663" y="255" font-size="13" font-weight="bold" fill="#D98AA6" text-anchor="middle">DVWA c99.php MODIFIED</text>
+<text x="326.66666666666663" y="273" font-size="9" font-family="monospace" fill="#6B6B6B" text-anchor="middle">C:/xampp/htdocs/DVWA/c99.php</text>
+<text x="326.66666666666663" y="289" font-size="9" fill="#1A1A1A" text-anchor="middle">note: created 2012 but changed 2015 — time</text>
+<circle cx="573.3333333333333" cy="150" r="7" fill="#D98AA6" stroke="#1A1A1A"/>
+<text x="573.3333333333333" y="130" font-size="11" font-family="monospace" fill="#6B6B6B" text-anchor="middle">2015-09-03 07:20</text>
+<line x1="573.3333333333333" y1="150" x2="573.3333333333333" y2="167" stroke="#E2DCD4"/>
+<text x="573.3333333333333" y="185" font-size="13" font-weight="bold" fill="#D98AA6" text-anchor="middle">c99 dropped in Temp</text>
+<text x="573.3333333333333" y="203" font-size="9" font-family="monospace" fill="#6B6B6B" text-anchor="middle">C:/Users/Administrator/.../Temp/c9</text>
+<text x="573.3333333333333" y="219" font-size="9" fill="#1A1A1A" text-anchor="middle">webshell staged in admin temp</text>
+<circle cx="820.0" cy="150" r="7" fill="#1A1A1A" stroke="#1A1A1A"/>
+<text x="820.0" y="130" font-size="11" font-family="monospace" fill="#6B6B6B" text-anchor="middle">2015-09-03 07:20</text>
+<line x1="820.0" y1="150" x2="820.0" y2="237" stroke="#E2DCD4"/>
+<text x="820.0" y="255" font-size="13" font-weight="bold" fill="#1A1A1A" text-anchor="middle">Temp c99 DELETED</text>
+<text x="820.0" y="273" font-size="9" font-family="monospace" fill="#6B6B6B" text-anchor="middle">(deleted — mft retained record)</text>
+<text x="820.0" y="289" font-size="9" fill="#1A1A1A" text-anchor="middle">anti-forensic cleanup; sworn still sees it</text>
+</svg>
+<h2>supporting findings</h2>
+<div class="card"><div class="fn">C:/xampp/htdocs/dashboard/phpinfo.php</div><div class="why">executable web script under a served web root (webshell candidate) &middot; receipt db75ff3b9bdc05d0 &middot; confirmed</div></div>
+<div class="card"><div class="fn">C:/xampp/htdocs/DVWA/about.php</div><div class="why">executable web script under a served web root (webshell candidate) &middot; receipt db75ff3b9bdc05d0 &middot; confirmed</div></div>
+<div class="card"><div class="fn">C:/xampp/htdocs/DVWA/config/config.inc.php</div><div class="why">executable web script under a served web root (webshell candidate) &middot; receipt db75ff3b9bdc05d0 &middot; confirmed</div></div>
+<div class="card"><div class="fn">C:/xampp/htdocs/DVWA/dvwa/includes/DBMS/DBMS.php</div><div class="why">executable web script under a served web root (webshell candidate) &middot; receipt db75ff3b9bdc05d0 &middot; confirmed</div></div>
+<div class="card"><div class="fn">C:/xampp/htdocs/DVWA/dvwa/includes/DBMS/MySQL.php</div><div class="why">executable web script under a served web root (webshell candidate) &middot; receipt db75ff3b9bdc05d0 &middot; confirmed</div></div>
+<div class="card"><div class="fn">C:/xampp/htdocs/DVWA/dvwa/includes/DBMS/PGSQL.php</div><div class="why">executable web script under a served web root (webshell candidate) &middot; receipt db75ff3b9bdc05d0 &middot; confirmed</div></div>
+
+<footer>sworn &middot; every finding traces to a hash-chained receipt &middot; evidence read-only, never modified &middot; scope: ntfs e01 web-server compromise &middot; github.com/nylaimanii/sworn</footer>
+</body></html>
